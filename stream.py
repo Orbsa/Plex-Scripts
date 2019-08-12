@@ -7,7 +7,12 @@ from subprocess import call
 import sys
 
 if __name__ == "__main__":
-    result = search(sys.argv[1])
-    call(mpv, result.getStreamURL())
-
+    if len(sys.argv) > 2:
+        result = console_search(sys.argv[1],sys.argv[2])
+        if result is not None:
+            call(['mpv', result.getStreamURL()])
+    else:
+        result = console_search(sys.argv[1])
+        if result is not None:
+            call(['mpv', result.getStreamURL()])
 
