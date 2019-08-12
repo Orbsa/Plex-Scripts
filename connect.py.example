@@ -1,7 +1,5 @@
-#!/usr/bin/python3
-
 from plexapi.server import PlexServer
 
-baseurl = 'http://plex.myServer.com:32400'
+baseurl = 'http://plex.MyServer.com:32400'
 token = ''
 plex = PlexServer(baseurl, token)

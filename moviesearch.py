@@ -8,34 +8,48 @@
 from connect import *
 
 def search(query, index=None):
+    if index is not None: # Ensure index is of type Int
+        try:
+            index = int(index)
+        except:
+            import sys
+            print ('Index provided: \"' + str(index) + '\" is not an integer')
+            sys.exit()
     movies = plex.library.section('Movies')
     results = movies.search(query)
-    print(index)
     if index is None:
         return results
     try:
         return results[index]
     except:
-        return None;
+        return None
 
-if __name__ == "__main__":
-    # Only import sys if running from shell
-    import sys
-    from pprint import pprint
-    if len(sys.argv) > 2:
-        results = search(sys.argv[1], int(sys.argv[2]))
+def console_search(query, index=None):
+    if index is not None:
+        results = search(query, index)
         if results is not None:
-            pprint(vars(results))
+            return results
         else:
-            print("No Match for '%s' With index: %s" % (sys.argv[1], sys.argv[2]))
+            print("No Match for '%s' With index: %s" % (query, index))
+            return None
     else:
-        results = search(sys.argv[1])
+        results = search(query)
         if results:
             if len(results) < 2:
-                pprint(vars(results[0]))
+                return results[0]
             else:
                 for i, movie in enumerate(results):
                     print(str(i) + ": " + movie.title)
         else:
-            print("No Match for " + sys.argv[1])
+            print("No Match for " + query)
+        return None
 
+if __name__ == "__main__":
+    import sys
+    from pprint import pprint
+    if len(sys.argv) > 2:
+        result = console_search(sys.argv[1],sys.argv[2])
+    else:
+        result = console_search(sys.argv[1]) # Pretty Print out dictionary if called from main and match found
+    if result is not None:
+        pprint(vars(result))
