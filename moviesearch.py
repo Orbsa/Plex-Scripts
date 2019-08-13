@@ -7,7 +7,7 @@
 
 from connect import *
 
-def search(query, index=None):
+def search(query=None, index=None, genre=None):
     if index is not None: # Ensure index is of type Int
         try:
             index = int(index)
@@ -16,7 +16,10 @@ def search(query, index=None):
             print ('Index provided: \"' + str(index) + '\" is not an integer')
             sys.exit()
     movies = plex.library.section('Movies')
-    results = movies.search(query)
+    if genre is None:
+        results = movies.search(query)
+    else:
+        results = movies.search(genre=genre)
     if index is None:
         return results
     try:
